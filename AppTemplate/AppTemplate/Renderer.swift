@@ -90,6 +90,10 @@ class Renderer: NSObject {
                             }
                         }
                         return nil
+                    case "switch":
+                        let _switch: UISwitch = UISwitch()
+                        applyFacts(view: _switch, facts: facts, tag: tag)
+                        return _switch
                     default:
                         return nil
                     }
@@ -268,6 +272,8 @@ class Renderer: NSObject {
         case "button":
             applyButtonFacts(button: view as! UIButton, facts: facts)
             break
+        case "switch":
+            applySwitchFacts(_switch: view as! UISwitch, facts: facts)
         case "parent":
             applyViewFacts(view: view, facts: facts)
             break
@@ -355,6 +361,31 @@ class Renderer: NSObject {
                     label.shadowOffset = CGSize(width: 0, height: -1)
                 }
                 break
+            default:
+                break
+            }
+        }
+    }
+
+    static func applySwitchFacts(_switch: UISwitch, facts: Json) {
+        for key in facts.keys {
+            switch key {
+            case "switchedOn":
+                if let value = facts[key] as? Bool {
+                    _switch.isOn = value
+                    _switch.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    _switch.isOn = true
+                }
+                break
+            case "switchedOnColor":
+                if let value = facts[key] as? [Float] {
+                    _switch.onTintColor(extractColor(value), for: .normal)
+                } else {
+                    // TODO double check that nil is the default value
+                    _switch.onTintColor(nil, for: .normal)
+                }
             default:
                 break
             }

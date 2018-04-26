@@ -6,7 +6,7 @@ module Element
         , image
         , button
           -- , slider
-          -- , switch
+        , switch
         , column
         , row
         , map
@@ -15,7 +15,7 @@ module Element
         )
 
 {-| #Element
-@docs Element, Attribute, label, image, button, column, row, map, beginnerProgram, program
+@docs Element, Attribute, label, image, button, switch, column, row, map, beginnerProgram, program
 -}
 
 import Element.Internal as Internal
