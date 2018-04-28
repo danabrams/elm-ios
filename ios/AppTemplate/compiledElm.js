@@ -7121,6 +7121,12 @@ var _pzp1997$elm_ios$Element_Attributes$lineBreakMode = function (value) {
 var _pzp1997$elm_ios$Element_Attributes$src = function (value) {
 	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'src', value);
 };
+var _pzp1997$elm_ios$Element_Attributes$minImage = function (value) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'minImage', value);
+};
+var _pzp1997$elm_ios$Element_Attributes$maxImage = function (value) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'maxImage', value);
+};
 var _pzp1997$elm_ios$Element_Attributes$boolProperty = F2(
 	function (name, bool) {
 		return A2(
@@ -7266,8 +7272,16 @@ var _pzp1997$elm_ios$Main$view = function (model) {
 												_0: _pzp1997$elm_ios$Element_Attributes$thumbColor(_elm_lang$core$Color$lightPurple),
 												_1: {
 													ctor: '::',
-													_0: _pzp1997$elm_ios$Element_Events$onFloatValueChanged(_pzp1997$elm_ios$Main$Slid),
-													_1: {ctor: '[]'}
+													_0: _pzp1997$elm_ios$Element_Attributes$minImage('sun.png'),
+													_1: {
+														ctor: '::',
+														_0: _pzp1997$elm_ios$Element_Attributes$maxImage('sun.png'),
+														_1: {
+															ctor: '::',
+															_0: _pzp1997$elm_ios$Element_Events$onFloatValueChanged(_pzp1997$elm_ios$Main$Slid),
+															_1: {ctor: '[]'}
+														}
+													}
 												}
 											}
 										}

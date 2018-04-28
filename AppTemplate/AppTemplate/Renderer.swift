@@ -496,6 +496,32 @@ class Renderer: NSObject {
                     slider.thumbTintColor = nil
                 }
                 break
+            case "maxImage":
+                if let src = facts[key] as? String, let imageUrl = URL(string: "assets/" + src) {
+                    let fileName = imageUrl.deletingPathExtension().lastPathComponent
+                    let fileExtension = imageUrl.pathExtension
+                    let directory = imageUrl.deletingLastPathComponent().absoluteString
+                    
+                    if let imagePath = Bundle.main.path(forResource: fileName, ofType: fileExtension, inDirectory: directory), let imageData = UIImage(contentsOfFile: imagePath) {
+                        
+                        slider.maximumValueImage = imageData
+                    }
+                    else{ slider.maximumValueImage = nil}
+                }
+                else {slider.maximumValueImage = nil}
+            case "minImage":
+                if let src = facts[key] as? String, let imageUrl = URL(string: "assets/" + src) {
+                    let fileName = imageUrl.deletingPathExtension().lastPathComponent
+                    let fileExtension = imageUrl.pathExtension
+                    let directory = imageUrl.deletingLastPathComponent().absoluteString
+                    
+                    if let imagePath = Bundle.main.path(forResource: fileName, ofType: fileExtension, inDirectory: directory), let imageData = UIImage(contentsOfFile: imagePath) {
+                        
+                        slider.minimumValueImage = imageData
+                    }
+                    else{ slider.minimumValueImage = nil}
+                }
+                else {slider.minimumValueImage = nil}
             default:
                 break
             }

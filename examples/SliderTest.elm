@@ -22,6 +22,8 @@ import Element.Attributes
         , maxTrackColor
         , thumbColor
         , width
+        , minImage
+        , maxImage
         )
 import Element.Events exposing (onFloatValueChanged)
 import Color
@@ -85,6 +87,8 @@ view model =
             , minTrackColor Color.red
             , maxTrackColor Color.green
             , thumbColor Color.lightPurple
+            , minImage "sun.png"
+            , maxImage "sun.png"
             , onFloatValueChanged Slid
             ]
         ]
