@@ -7064,6 +7064,12 @@ var _pzp1997$elm_ios$Element_Attributes$switchedOffColor = function (value) {
 var _pzp1997$elm_ios$Element_Attributes$thumbColor = function (value) {
 	return A2(_pzp1997$elm_ios$Element_Attributes$colorProperty, 'thumbColor', value);
 };
+var _pzp1997$elm_ios$Element_Attributes$maxTrackColor = function (value) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$colorProperty, 'maxTrackColor', value);
+};
+var _pzp1997$elm_ios$Element_Attributes$minTrackColor = function (value) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$colorProperty, 'minTrackColor', value);
+};
 var _pzp1997$elm_ios$Element_Attributes$floatProperty = F2(
 	function (name, $float) {
 		return A2(
@@ -7073,6 +7079,15 @@ var _pzp1997$elm_ios$Element_Attributes$floatProperty = F2(
 	});
 var _pzp1997$elm_ios$Element_Attributes$fontSize = function (value) {
 	return A2(_pzp1997$elm_ios$Element_Attributes$floatProperty, 'fontSize', value);
+};
+var _pzp1997$elm_ios$Element_Attributes$maxValue = function (value) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$floatProperty, 'maximumValue', value);
+};
+var _pzp1997$elm_ios$Element_Attributes$minValue = function (value) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$floatProperty, 'minimumValue', value);
+};
+var _pzp1997$elm_ios$Element_Attributes$sliderValue = function (value) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$floatProperty, 'sliderValue', value);
 };
 var _pzp1997$elm_ios$Element_Attributes$intProperty = F2(
 	function (name, $int) {
@@ -7196,9 +7211,9 @@ var _pzp1997$elm_ios$Main$update = F2(
 		var _p0 = msg;
 		return {ctor: '_Tuple2', _0: _p0._0, _1: _elm_lang$core$Platform_Cmd$none};
 	});
-var _pzp1997$elm_ios$Main$init = {ctor: '_Tuple2', _0: true, _1: _elm_lang$core$Platform_Cmd$none};
-var _pzp1997$elm_ios$Main$Switched = function (a) {
-	return {ctor: 'Switched', _0: a};
+var _pzp1997$elm_ios$Main$init = {ctor: '_Tuple2', _0: 0, _1: _elm_lang$core$Platform_Cmd$none};
+var _pzp1997$elm_ios$Main$Slid = function (a) {
+	return {ctor: 'Slid', _0: a};
 };
 var _pzp1997$elm_ios$Main$view = function (model) {
 	return A2(
@@ -7227,43 +7242,41 @@ var _pzp1997$elm_ios$Main$view = function (model) {
 				}),
 			_1: {
 				ctor: '::',
-				_0: _pzp1997$elm_ios$Element$switch(
+				_0: _pzp1997$elm_ios$Element$slider(
 					{
 						ctor: '::',
-						_0: _pzp1997$elm_ios$Element_Attributes$switchedOn(model),
+						_0: _pzp1997$elm_ios$Element_Attributes$minValue(0),
 						_1: {
 							ctor: '::',
-							_0: _pzp1997$elm_ios$Element_Attributes$switchedOnColor(_elm_lang$core$Color$darkOrange),
+							_0: _pzp1997$elm_ios$Element_Attributes$maxValue(20),
 							_1: {
 								ctor: '::',
-								_0: _pzp1997$elm_ios$Element_Attributes$switchedOffColor(_elm_lang$core$Color$darkGreen),
+								_0: _pzp1997$elm_ios$Element_Attributes$width(300),
 								_1: {
 									ctor: '::',
-									_0: _pzp1997$elm_ios$Element_Attributes$thumbColor(_elm_lang$core$Color$lightBlue),
+									_0: _pzp1997$elm_ios$Element_Attributes$sliderValue(model),
 									_1: {
 										ctor: '::',
-										_0: _pzp1997$elm_ios$Element_Events$onBoolValueChanged(_pzp1997$elm_ios$Main$Switched),
-										_1: {ctor: '[]'}
+										_0: _pzp1997$elm_ios$Element_Attributes$minTrackColor(_elm_lang$core$Color$red),
+										_1: {
+											ctor: '::',
+											_0: _pzp1997$elm_ios$Element_Attributes$maxTrackColor(_elm_lang$core$Color$green),
+											_1: {
+												ctor: '::',
+												_0: _pzp1997$elm_ios$Element_Attributes$thumbColor(_elm_lang$core$Color$lightPurple),
+												_1: {
+													ctor: '::',
+													_0: _pzp1997$elm_ios$Element_Events$onFloatValueChanged(_pzp1997$elm_ios$Main$Slid),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
 									}
 								}
 							}
 						}
 					}),
-				_1: {
-					ctor: '::',
-					_0: _pzp1997$elm_ios$Element$button(
-						{
-							ctor: '::',
-							_0: _pzp1997$elm_ios$Element_Attributes$text('click'),
-							_1: {
-								ctor: '::',
-								_0: _pzp1997$elm_ios$Element_Events$onTouchUpInside(
-									_pzp1997$elm_ios$Main$Switched(!model)),
-								_1: {ctor: '[]'}
-							}
-						}),
-					_1: {ctor: '[]'}
-				}
+				_1: {ctor: '[]'}
 			}
 		});
 };

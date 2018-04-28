@@ -64,10 +64,15 @@ module Element.Attributes
         , switchedOnColor
         , switchedOffColor
         , thumbColor
+        , minValue
+        , maxValue
+        , sliderValue
+        , minTrackColor
+        , maxTrackColor
         )
 
 {-| #Attributes
-@docs map, text, textColor, textAlignment, font, fontSize, numberOfLines, lineBreakMode, shadowColor, shadowOffset, src, backgroundColor, justifyContent, flexWrap, alignItems, alignSelf, alignContent, flexGrow, flexShrink, flexBasis, position, left, top, right, bottom, start, end, minWidth, minHeight, maxWidth, maxHeight, width, height, margin, marginLeft, marginTop, marginRight, marginBottom, marginStart, marginEnd, marginVertical, marginHorizontal, padding, paddingLeft, paddingTop, paddingRight, paddingBottom, paddingStart, paddingEnd, paddingVertical, paddingHorizontal, borderWidth, borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth, borderStartWidth, borderEndWidth, aspectRatio, direction, switchedOn, switchedOnColor, switchedOffColor, thumbColor
+@docs map, text, textColor, textAlignment, font, fontSize, numberOfLines, lineBreakMode, shadowColor, shadowOffset, src, backgroundColor, justifyContent, flexWrap, alignItems, alignSelf, alignContent, flexGrow, flexShrink, flexBasis, position, left, top, right, bottom, start, end, minWidth, minHeight, maxWidth, maxHeight, width, height, margin, marginLeft, marginTop, marginRight, marginBottom, marginStart, marginEnd, marginVertical, marginHorizontal, padding, paddingLeft, paddingTop, paddingRight, paddingBottom, paddingStart, paddingEnd, paddingVertical, paddingHorizontal, borderWidth, borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth, borderStartWidth, borderEndWidth, aspectRatio, direction, switchedOn, switchedOnColor, switchedOffColor, thumbColor, minValue, maxValue, sliderValue, minTrackColor, maxTrackColor
 -}
 
 import Color exposing (Color)
@@ -253,6 +258,40 @@ switchedOffColor value =
 thumbColor : Color -> Attribute msg
 thumbColor value =
     colorProperty "thumbColor" value
+
+
+
+{- Slider -}
+
+
+{-| -}
+maxValue : Float -> Attribute msg
+maxValue value =
+    floatProperty "maximumValue" value
+
+
+{-| -}
+minValue : Float -> Attribute msg
+minValue value =
+    floatProperty "minimumValue" value
+
+
+{-| -}
+sliderValue : Float -> Attribute msg
+sliderValue value =
+    floatProperty "sliderValue" value
+
+
+{-| -}
+maxTrackColor : Color -> Attribute msg
+maxTrackColor value =
+    colorProperty "maxTrackColor" value
+
+
+{-| -}
+minTrackColor : Color -> Attribute msg
+minTrackColor value =
+    colorProperty "minTrackColor" value
 
 
 

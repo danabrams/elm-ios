@@ -102,6 +102,18 @@ class Renderer: NSObject {
                             }
                         }
                         return _switch
+                    case "slider":
+                        let slider: UISlider = UISlider()
+                        applyFacts(view: slider, facts: facts, tag: tag)
+
+                        if !handlers.isEmpty {
+                            let handlerNode = handlers[handlersIndex] as Json
+                            if let handlerOffset = handlerNode["offset"] as? Int, handlerOffset == offset, let funcs = handlerNode["funcs"] as? Json, let eventId = handlerNode["eventId"] as? UInt64 {
+                                addControlHandlers(funcs, id: eventId, view: slider)
+                                handlersIndex += 1
+                            }
+                        }
+                        return slider
                     default:
                         return nil
                     }
@@ -257,6 +269,10 @@ class Renderer: NSObject {
                         view.addAction(event: eventType, { (_, event) in
                             viewController.handleEvent(id: id, name: name, data: _switch.isOn)
                         })
+                    case let slider as UISlider:
+                        view.addAction(event: eventType, { (_, event) in
+                            viewController.handleEvent(id: id, name: name, data: slider.value)
+                        })
                     default:
                         view.addAction(event: eventType, { (_, event) in
                             viewController.handleEvent(id: id, name: name, data: event)
@@ -289,6 +305,8 @@ class Renderer: NSObject {
             break
         case "switch":
             applySwitchFacts(_switch: view as! UISwitch, facts: facts)
+        case "slider":
+            applySliderFacts(slider: view as! UISlider, facts: facts)
         case "parent":
             applyViewFacts(view: view, facts: facts)
             break
@@ -413,6 +431,69 @@ class Renderer: NSObject {
                     _switch.thumbTintColor = extractColor(value)
                 } else {
                     _switch.thumbTintColor = nil
+                }
+                break
+            default:
+                break
+            }
+        }
+    }
+
+    static func applySliderFacts(slider: UISlider, facts: Json) {
+        for key in facts.keys {
+            switch key {
+            case "minimumValue":
+                if let value = facts[key] as? Float {
+                    slider.minimumValue = value
+                    slider.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    slider.minimumValue = 0
+                }
+                break
+            case "maximumValue":
+                if let value = facts[key] as? Float {
+                    slider.maximumValue = value
+                    slider.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    slider.maximumValue = 1
+                }
+                break
+            case "sliderValue":
+                if let value = facts[key] as? Float {
+                    slider.value = value
+                    slider.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    slider.value = 0
+                }
+                break
+            case "minTrackColor":
+                if let value = facts[key] as? [Float] {
+                    slider.minimumTrackTintColor = extractColor(value)
+                    slider.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    slider.minimumTrackTintColor = nil
+                }
+                break
+            case "maxTrackColor":
+                if let value = facts[key] as? [Float] {
+                    slider.maximumTrackTintColor = extractColor(value)
+                    slider.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    slider.maximumTrackTintColor = nil
+                }
+                break
+            case "thumbColor":
+                if let value = facts[key] as? [Float] {
+                    slider.thumbTintColor = extractColor(value)
+                    slider.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    slider.thumbTintColor = nil
                 }
                 break
             default:
