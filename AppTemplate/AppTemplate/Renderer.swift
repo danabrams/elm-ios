@@ -93,6 +93,14 @@ class Renderer: NSObject {
                     case "switch":
                         let _switch: UISwitch = UISwitch()
                         applyFacts(view: _switch, facts: facts, tag: tag)
+
+                        if !handlers.isEmpty {
+                            let handlerNode = handlers[handlersIndex] as Json
+                            if let handlerOffset = handlerNode["offset"] as? Int, handlerOffset == offset, let funcs = handlerNode["funcs"] as? Json, let eventId = handlerNode["eventId"] as? UInt64 {
+                                addControlHandlers(funcs, id: eventId, view: _switch)
+                                handlersIndex += 1
+                            }
+                        }
                         return _switch
                     default:
                         return nil
@@ -241,17 +249,24 @@ class Renderer: NSObject {
 
     /* APPLY HANDLERS */
 
-
     static func addControlHandlers(_ handlers: Json, id: UInt64, view: UIControl) {
         for name in handlers.keys {
             if let eventType = extractEventType(name) {
-                view.addAction(event: eventType, { (_, event) in
-                    viewController.handleEvent(id: id, name: name, data: event)
-                })
+                switch view {
+                    case let _switch as UISwitch:
+                        view.addAction(event: eventType, { (_, event) in
+                            viewController.handleEvent(id: id, name: name, data: _switch.isOn)
+                        })
+                    default:
+                        view.addAction(event: eventType, { (_, event) in
+                            viewController.handleEvent(id: id, name: name, data: event)
+                        })
+                }
+                
             }
         }
     }
-
+        
     static func removeControlHandlers(_ handlers: [String], view: UIControl) {
         for handlerName in handlers {
             if let eventType = extractEventType(handlerName) {
@@ -381,11 +396,25 @@ class Renderer: NSObject {
                 break
             case "switchedOnColor":
                 if let value = facts[key] as? [Float] {
-                    _switch.onTintColor(extractColor(value), for: .normal)
+                    _switch.onTintColor = extractColor(value)
                 } else {
-                    // TODO double check that nil is the default value
-                    _switch.onTintColor(nil, for: .normal)
+                    _switch.onTintColor = nil
                 }
+                break
+            case "switchedOffColor":
+                if let value = facts[key] as? [Float] {
+                    _switch.tintColor = extractColor(value)
+                } else {
+                    _switch.tintColor = nil
+                }
+                break
+            case "thumbColor":
+                if let value = facts[key] as? [Float] {
+                    _switch.thumbTintColor = extractColor(value)
+                } else {
+                    _switch.thumbTintColor = nil
+                }
+                break
             default:
                 break
             }

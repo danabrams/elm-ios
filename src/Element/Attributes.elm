@@ -60,11 +60,14 @@ module Element.Attributes
         , borderEndWidth
         , aspectRatio
         , direction
-        , switchedOn, switchedOnColor, switchedOffColor
+        , switchedOn
+        , switchedOnColor
+        , switchedOffColor
+        , thumbColor
         )
 
 {-| #Attributes
-@docs map, text, textColor, textAlignment, font, fontSize, numberOfLines, lineBreakMode, shadowColor, shadowOffset, src, backgroundColor, justifyContent, flexWrap, alignItems, alignSelf, alignContent, flexGrow, flexShrink, flexBasis, position, left, top, right, bottom, start, end, minWidth, minHeight, maxWidth, maxHeight, width, height, margin, marginLeft, marginTop, marginRight, marginBottom, marginStart, marginEnd, marginVertical, marginHorizontal, padding, paddingLeft, paddingTop, paddingRight, paddingBottom, paddingStart, paddingEnd, paddingVertical, paddingHorizontal, borderWidth, borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth, borderStartWidth, borderEndWidth, aspectRatio, direction, switchedOn, switchedOnColor, switchedOffColor
+@docs map, text, textColor, textAlignment, font, fontSize, numberOfLines, lineBreakMode, shadowColor, shadowOffset, src, backgroundColor, justifyContent, flexWrap, alignItems, alignSelf, alignContent, flexGrow, flexShrink, flexBasis, position, left, top, right, bottom, start, end, minWidth, minHeight, maxWidth, maxHeight, width, height, margin, marginLeft, marginTop, marginRight, marginBottom, marginStart, marginEnd, marginVertical, marginHorizontal, padding, paddingLeft, paddingTop, paddingRight, paddingBottom, paddingStart, paddingEnd, paddingVertical, paddingHorizontal, borderWidth, borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth, borderStartWidth, borderEndWidth, aspectRatio, direction, switchedOn, switchedOnColor, switchedOffColor, thumbColor
 -}
 
 import Color exposing (Color)
@@ -75,9 +78,11 @@ import Json.Encode as Json
 
 {- Property Helpers -}
 
+
 boolProperty : String -> Bool -> Attribute msg
 boolProperty name bool =
     Internal.property name (Json.bool bool)
+
 
 stringProperty : String -> String -> Attribute msg
 stringProperty name string =
@@ -221,22 +226,35 @@ backgroundColor : Color -> Attribute msg
 backgroundColor value =
     colorProperty "backgroundColor" value
 
+
+
 {- Switch -}
+
 
 {-| -}
 switchedOn : Bool -> Attribute msg
 switchedOn value =
     boolProperty "switchedOn" value
 
+
 {-| -}
 switchedOnColor : Color -> Attribute msg
 switchedOnColor value =
     colorProperty "switchedOnColor" value
 
+
 {-| -}
 switchedOffColor : Color -> Attribute msg
 switchedOffColor value =
     colorProperty "switchedOffColor" value
+
+
+{-| -}
+thumbColor : Color -> Attribute msg
+thumbColor value =
+    colorProperty "thumbColor" value
+
+
 
 {- Yoga -}
 -- Flexbox properties

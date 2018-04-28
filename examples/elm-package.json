@@ -4,7 +4,7 @@
     "repository": "https://github.com/danabrams/elm-ios.git",
     "license": "BSD3",
     "source-directories": [
-        "src"
+        "../src"
     ],
     "exposed-modules": [
         "Element",
@@ -14,11 +14,7 @@
     ],
     "native-modules": true,
     "dependencies": {
-        "elm-lang/core": "5.0.0 <= v < 6.0.0",
-        "pzp1997/elm-ios": "0.1.0 <= v <= 0.1.0"
-    },
-    "dependency-sources": {
-        "pzp1997/elm-ios": "https://github.com/danabrams/elm-ios.git"
+        "elm-lang/core": "5.0.0 <= v < 6.0.0"
     },
     "elm-version": "0.18.0 <= v < 0.19.0"
 }

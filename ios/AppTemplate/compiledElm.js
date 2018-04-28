@@ -7061,6 +7061,9 @@ var _pzp1997$elm_ios$Element_Attributes$switchedOnColor = function (value) {
 var _pzp1997$elm_ios$Element_Attributes$switchedOffColor = function (value) {
 	return A2(_pzp1997$elm_ios$Element_Attributes$colorProperty, 'switchedOffColor', value);
 };
+var _pzp1997$elm_ios$Element_Attributes$thumbColor = function (value) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$colorProperty, 'thumbColor', value);
+};
 var _pzp1997$elm_ios$Element_Attributes$floatProperty = F2(
 	function (name, $float) {
 		return A2(
@@ -7188,6 +7191,15 @@ var _pzp1997$elm_ios$Element_Events$onAllTouchEvents = function (msg) {
 		_elm_lang$core$Json_Decode$succeed(msg));
 };
 
+var _pzp1997$elm_ios$Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		return {ctor: '_Tuple2', _0: _p0._0, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _pzp1997$elm_ios$Main$init = {ctor: '_Tuple2', _0: true, _1: _elm_lang$core$Platform_Cmd$none};
+var _pzp1997$elm_ios$Main$Switched = function (a) {
+	return {ctor: 'Switched', _0: a};
+};
 var _pzp1997$elm_ios$Main$view = function (model) {
 	return A2(
 		_pzp1997$elm_ios$Element$column,
@@ -7221,20 +7233,40 @@ var _pzp1997$elm_ios$Main$view = function (model) {
 						_0: _pzp1997$elm_ios$Element_Attributes$switchedOn(model),
 						_1: {
 							ctor: '::',
-							_0: _pzp1997$elm_ios$Element_Attributes$switchedOnColor(_elm_lang$core$Color$red),
-							_1: {ctor: '[]'}
+							_0: _pzp1997$elm_ios$Element_Attributes$switchedOnColor(_elm_lang$core$Color$darkOrange),
+							_1: {
+								ctor: '::',
+								_0: _pzp1997$elm_ios$Element_Attributes$switchedOffColor(_elm_lang$core$Color$darkGreen),
+								_1: {
+									ctor: '::',
+									_0: _pzp1997$elm_ios$Element_Attributes$thumbColor(_elm_lang$core$Color$lightBlue),
+									_1: {
+										ctor: '::',
+										_0: _pzp1997$elm_ios$Element_Events$onBoolValueChanged(_pzp1997$elm_ios$Main$Switched),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
 						}
 					}),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: _pzp1997$elm_ios$Element$button(
+						{
+							ctor: '::',
+							_0: _pzp1997$elm_ios$Element_Attributes$text('click'),
+							_1: {
+								ctor: '::',
+								_0: _pzp1997$elm_ios$Element_Events$onTouchUpInside(
+									_pzp1997$elm_ios$Main$Switched(!model)),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
 			}
 		});
 };
-var _pzp1997$elm_ios$Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		return {ctor: '_Tuple2', _0: !model, _1: _elm_lang$core$Platform_Cmd$none};
-	});
-var _pzp1997$elm_ios$Main$init = {ctor: '_Tuple2', _0: false, _1: _elm_lang$core$Platform_Cmd$none};
 var _pzp1997$elm_ios$Main$main = _pzp1997$elm_ios$Element$program(
 	{
 		init: _pzp1997$elm_ios$Main$init,
@@ -7244,7 +7276,6 @@ var _pzp1997$elm_ios$Main$main = _pzp1997$elm_ios$Element$program(
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();
-var _pzp1997$elm_ios$Main$Switched = {ctor: 'Switched'};
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};

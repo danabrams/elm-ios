@@ -90,6 +90,18 @@ class Renderer: NSObject {
                             }
                         }
                         return nil
+                    case "switch":
+                        let _switch: UISwitch = UISwitch()
+                        applyFacts(view: _switch, facts: facts, tag: tag)
+
+                        if !handlers.isEmpty {
+                            let handlerNode = handlers[handlersIndex] as Json
+                            if let handlerOffset = handlerNode["offset"] as? Int, handlerOffset == offset, let funcs = handlerNode["funcs"] as? Json, let eventId = handlerNode["eventId"] as? UInt64 {
+                                addControlHandlers(funcs, id: eventId, view: _switch)
+                                handlersIndex += 1
+                            }
+                        }
+                        return _switch
                     default:
                         return nil
                     }
@@ -237,17 +249,24 @@ class Renderer: NSObject {
 
     /* APPLY HANDLERS */
 
-
     static func addControlHandlers(_ handlers: Json, id: UInt64, view: UIControl) {
         for name in handlers.keys {
             if let eventType = extractEventType(name) {
-                view.addAction(event: eventType, { (_, event) in
-                    viewController.handleEvent(id: id, name: name, data: event)
-                })
+                switch view {
+                    case let _switch as UISwitch:
+                        view.addAction(event: eventType, { (_, event) in
+                            viewController.handleEvent(id: id, name: name, data: _switch.isOn)
+                        })
+                    default:
+                        view.addAction(event: eventType, { (_, event) in
+                            viewController.handleEvent(id: id, name: name, data: event)
+                        })
+                }
+                
             }
         }
     }
-
+        
     static func removeControlHandlers(_ handlers: [String], view: UIControl) {
         for handlerName in handlers {
             if let eventType = extractEventType(handlerName) {
@@ -268,6 +287,8 @@ class Renderer: NSObject {
         case "button":
             applyButtonFacts(button: view as! UIButton, facts: facts)
             break
+        case "switch":
+            applySwitchFacts(_switch: view as! UISwitch, facts: facts)
         case "parent":
             applyViewFacts(view: view, facts: facts)
             break
@@ -353,6 +374,45 @@ class Renderer: NSObject {
                     label.shadowOffset = CGSize(width: value[0], height: value[1])
                 } else {
                     label.shadowOffset = CGSize(width: 0, height: -1)
+                }
+                break
+            default:
+                break
+            }
+        }
+    }
+
+    static func applySwitchFacts(_switch: UISwitch, facts: Json) {
+        for key in facts.keys {
+            switch key {
+            case "switchedOn":
+                if let value = facts[key] as? Bool {
+                    _switch.isOn = value
+                    _switch.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    _switch.isOn = true
+                }
+                break
+            case "switchedOnColor":
+                if let value = facts[key] as? [Float] {
+                    _switch.onTintColor = extractColor(value)
+                } else {
+                    _switch.onTintColor = nil
+                }
+                break
+            case "switchedOffColor":
+                if let value = facts[key] as? [Float] {
+                    _switch.tintColor = extractColor(value)
+                } else {
+                    _switch.tintColor = nil
+                }
+                break
+            case "thumbColor":
+                if let value = facts[key] as? [Float] {
+                    _switch.thumbTintColor = extractColor(value)
+                } else {
+                    _switch.thumbTintColor = nil
                 }
                 break
             default:

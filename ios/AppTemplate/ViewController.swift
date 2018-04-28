@@ -15,13 +15,13 @@ class ViewController: UIViewController {
             var handlerList = handlerList
             Renderer.initialRender(view: view, handlers: handlerList)
         }
-        context.setObject(initialRender, forKeyedSubscript: "initialRender" as (NSCopying & NSObjectProtocol)!)
+        context.setObject(initialRender, forKeyedSubscript: "initialRender" as (NSCopying & NSObjectProtocol)?)
 
         let applyPatches: @convention(block) ([String : Any]) -> Void = { (patches) in
             var patches = patches
             Renderer.applyPatches(&patches)
         }
-        context.setObject(applyPatches, forKeyedSubscript: "applyPatches" as (NSCopying & NSObjectProtocol)!)
+        context.setObject(applyPatches, forKeyedSubscript: "applyPatches" as (NSCopying & NSObjectProtocol)?)
 
         // expose Swift implementations of setTimeout, setInterval, and clearInterval to JS global context
         let setTimeout: @convention(block) (JSValue, Double) -> Void = { (function, timeout) in
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
                 function.call(withArguments: [])
             })
         }
-        context.setObject(setTimeout, forKeyedSubscript: "setTimeout" as (NSCopying & NSObjectProtocol)!)
+        context.setObject(setTimeout, forKeyedSubscript: "setTimeout" as (NSCopying & NSObjectProtocol)?)
 
         let setInterval: @convention(block) (JSValue, Double) -> Int = { (function, interval) in
             let timer = Timer.scheduledTimer(timeInterval: interval / 1000.0, repeats: true, action: { (timer) in
@@ -41,7 +41,7 @@ class ViewController: UIViewController {
             nextTimerId += 1
             return timerId
         }
-        context.setObject(setInterval, forKeyedSubscript: "setInterval" as (NSCopying & NSObjectProtocol)!)
+        context.setObject(setInterval, forKeyedSubscript: "setInterval" as (NSCopying & NSObjectProtocol)?)
 
         let clearInterval: @convention(block) (Int) -> Void = { id in
             if let timer = timerRegistry[id] {
@@ -50,13 +50,13 @@ class ViewController: UIViewController {
                 timerRegistry.removeValue(forKey: id)
             }
         }
-        context.setObject(clearInterval, forKeyedSubscript: "clearInterval" as (NSCopying & NSObjectProtocol)!)
+        context.setObject(clearInterval, forKeyedSubscript: "clearInterval" as (NSCopying & NSObjectProtocol)?)
 
         // expose Swift implementations of console.* to JS global context
         let consoleLog: @convention(block) (String) -> Void = { message in
             print("JS Console: " + message)
         }
-        context.setObject(consoleLog, forKeyedSubscript: "consoleLog" as (NSCopying & NSObjectProtocol)!)
+        context.setObject(consoleLog, forKeyedSubscript: "consoleLog" as (NSCopying & NSObjectProtocol)?)
 
         // log JS exceptions
         context.exceptionHandler = { context, exception in

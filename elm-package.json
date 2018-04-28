@@ -4,7 +4,8 @@
     "repository": "https://github.com/pzp1997/elm-ios.git",
     "license": "BSD3",
     "source-directories": [
-        "src"
+        "src",
+        "examples"
     ],
     "exposed-modules": [
         "Element",

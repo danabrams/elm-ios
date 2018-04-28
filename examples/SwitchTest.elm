@@ -7,6 +7,7 @@ import Element
         , label
         , switch
         , program
+        , button
         )
 import Element.Attributes
     exposing
@@ -16,8 +17,10 @@ import Element.Attributes
         , text
         , switchedOn
         , switchedOnColor
+        , switchedOffColor
+        , thumbColor
         )
-import Element.Events exposing (onTouchUpInside)
+import Element.Events exposing (onBoolValueChanged, onTouchUpInside)
 import Color
 
 
@@ -41,7 +44,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( False, Cmd.none )
+    ( True, Cmd.none )
 
 
 
@@ -49,14 +52,14 @@ init =
 
 
 type Msg
-    = Switched
+    = Switched Bool
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    (case msg of
-        Switched ->
-            ( not model, Cmd.none ))
+    case msg of
+        Switched ison ->
+            ( ison, Cmd.none )
 
 
 
@@ -71,5 +74,11 @@ view model =
         , alignItems "center"
         ]
         [ label [ text <| toString model ]
-        , switch [ switchedOn model, switchedOnColor Color.red ]
+        , switch
+            [ switchedOn model
+            , switchedOnColor Color.darkOrange
+            , switchedOffColor Color.darkGreen
+            , thumbColor Color.lightBlue
+            , onBoolValueChanged <| Switched
+            ]
         ]

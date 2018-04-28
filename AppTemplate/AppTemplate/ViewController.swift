@@ -56,7 +56,7 @@ class ViewController: UIViewController {
         let consoleLog: @convention(block) (String) -> Void = { message in
             print("JS Console: " + message)
         }
-        context.setObject(consoleLog, forKeyedSubscript: "consoleLog" as (NSCopying & NSObjectProtocol)!)
+        context.setObject(consoleLog, forKeyedSubscript: "consoleLog" as (NSCopying & NSObjectProtocol)?)
 
         // log JS exceptions
         context.exceptionHandler = { context, exception in
