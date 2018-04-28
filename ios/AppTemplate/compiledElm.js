@@ -6823,6 +6823,9 @@ var _pzp1997$elm_ios$Element$column = F2(
 			},
 			children);
 	});
+var _pzp1997$elm_ios$Element$textField = function (properties) {
+	return A2(_pzp1997$elm_ios$Element_Internal$leaf, 'textField', properties);
+};
 var _pzp1997$elm_ios$Element$switch = function (properties) {
 	return A2(_pzp1997$elm_ios$Element_Internal$leaf, 'switch', properties);
 };
@@ -7127,6 +7130,32 @@ var _pzp1997$elm_ios$Element_Attributes$minImage = function (value) {
 var _pzp1997$elm_ios$Element_Attributes$maxImage = function (value) {
 	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'maxImage', value);
 };
+var _pzp1997$elm_ios$Element_Attributes$placeholder = function (value) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'placeholder', value);
+};
+var _pzp1997$elm_ios$Element_Attributes$clearButton = function (style) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'clearButton', style);
+};
+var _pzp1997$elm_ios$Element_Attributes$unlessEditingClearButton = _pzp1997$elm_ios$Element_Attributes$clearButton('UnlessEditing');
+var _pzp1997$elm_ios$Element_Attributes$neverClearButton = _pzp1997$elm_ios$Element_Attributes$clearButton('Never');
+var _pzp1997$elm_ios$Element_Attributes$whileEditingClearButton = _pzp1997$elm_ios$Element_Attributes$clearButton('WhileEditing');
+var _pzp1997$elm_ios$Element_Attributes$alwaysClearButton = _pzp1997$elm_ios$Element_Attributes$clearButton('Always');
+var _pzp1997$elm_ios$Element_Attributes$textBorderStyle = function (style) {
+	var border = function () {
+		var _p0 = style;
+		switch (_p0.ctor) {
+			case 'None':
+				return 'None';
+			case 'RoundedRect':
+				return 'RoundedRect';
+			case 'Line':
+				return 'Line';
+			default:
+				return 'Bezel';
+		}
+	}();
+	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'textBorderStyle', border);
+};
 var _pzp1997$elm_ios$Element_Attributes$boolProperty = F2(
 	function (name, bool) {
 		return A2(
@@ -7137,6 +7166,18 @@ var _pzp1997$elm_ios$Element_Attributes$boolProperty = F2(
 var _pzp1997$elm_ios$Element_Attributes$switchedOn = function (value) {
 	return A2(_pzp1997$elm_ios$Element_Attributes$boolProperty, 'switchedOn', value);
 };
+var _pzp1997$elm_ios$Element_Attributes$Bezel = {ctor: 'Bezel'};
+var _pzp1997$elm_ios$Element_Attributes$bezelBorder = _pzp1997$elm_ios$Element_Attributes$textBorderStyle(_pzp1997$elm_ios$Element_Attributes$Bezel);
+var _pzp1997$elm_ios$Element_Attributes$Line = {ctor: 'Line'};
+var _pzp1997$elm_ios$Element_Attributes$lineBorder = _pzp1997$elm_ios$Element_Attributes$textBorderStyle(_pzp1997$elm_ios$Element_Attributes$Line);
+var _pzp1997$elm_ios$Element_Attributes$RoundedRect = {ctor: 'RoundedRect'};
+var _pzp1997$elm_ios$Element_Attributes$roundedRectBorder = _pzp1997$elm_ios$Element_Attributes$textBorderStyle(_pzp1997$elm_ios$Element_Attributes$RoundedRect);
+var _pzp1997$elm_ios$Element_Attributes$None = {ctor: 'None'};
+var _pzp1997$elm_ios$Element_Attributes$noneBorder = _pzp1997$elm_ios$Element_Attributes$textBorderStyle(_pzp1997$elm_ios$Element_Attributes$None);
+var _pzp1997$elm_ios$Element_Attributes$Always = {ctor: 'Always'};
+var _pzp1997$elm_ios$Element_Attributes$UnlessEditing = {ctor: 'UnlessEditing'};
+var _pzp1997$elm_ios$Element_Attributes$WhileEditing = {ctor: 'WhileEditing'};
+var _pzp1997$elm_ios$Element_Attributes$Never = {ctor: 'Never'};
 
 var _pzp1997$elm_ios$Element_Events$on = _pzp1997$elm_ios$Element_Internal$on;
 var _pzp1997$elm_ios$Element_Events$onBoolValueChanged = function (tagger) {
@@ -7211,15 +7252,45 @@ var _pzp1997$elm_ios$Element_Events$onAllTouchEvents = function (msg) {
 		'allTouchEvents',
 		_elm_lang$core$Json_Decode$succeed(msg));
 };
+var _pzp1997$elm_ios$Element_Events$onEditingDidEnd = function (tagger) {
+	return A2(
+		_pzp1997$elm_ios$Element_Events$on,
+		'editingDidEnd',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$string));
+};
+var _pzp1997$elm_ios$Element_Events$onEditingDidEndOnExit = function (tagger) {
+	return A2(
+		_pzp1997$elm_ios$Element_Events$on,
+		'editingDidEndOnExit',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$string));
+};
+var _pzp1997$elm_ios$Element_Events$onEditingDidBegin = function (tagger) {
+	return A2(
+		_pzp1997$elm_ios$Element_Events$on,
+		'editingDidBegin',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$string));
+};
+var _pzp1997$elm_ios$Element_Events$onEditingChanged = function (tagger) {
+	return A2(
+		_pzp1997$elm_ios$Element_Events$on,
+		'editingChanged',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$string));
+};
+var _pzp1997$elm_ios$Element_Events$allEditingEvents = function (tagger) {
+	return A2(
+		_pzp1997$elm_ios$Element_Events$on,
+		'allEditingEvents',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$string));
+};
 
 var _pzp1997$elm_ios$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		return {ctor: '_Tuple2', _0: _p0._0, _1: _elm_lang$core$Platform_Cmd$none};
 	});
-var _pzp1997$elm_ios$Main$init = {ctor: '_Tuple2', _0: 0, _1: _elm_lang$core$Platform_Cmd$none};
-var _pzp1997$elm_ios$Main$Slid = function (a) {
-	return {ctor: 'Slid', _0: a};
+var _pzp1997$elm_ios$Main$init = {ctor: '_Tuple2', _0: '', _1: _elm_lang$core$Platform_Cmd$none};
+var _pzp1997$elm_ios$Main$TextUpdate = function (a) {
+	return {ctor: 'TextUpdate', _0: a};
 };
 var _pzp1997$elm_ios$Main$view = function (model) {
 	return A2(
@@ -7242,46 +7313,37 @@ var _pzp1997$elm_ios$Main$view = function (model) {
 			_0: _pzp1997$elm_ios$Element$label(
 				{
 					ctor: '::',
-					_0: _pzp1997$elm_ios$Element_Attributes$text(
-						_elm_lang$core$Basics$toString(model)),
+					_0: _pzp1997$elm_ios$Element_Attributes$text(model),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
-				_0: _pzp1997$elm_ios$Element$slider(
+				_0: _pzp1997$elm_ios$Element$textField(
 					{
 						ctor: '::',
-						_0: _pzp1997$elm_ios$Element_Attributes$minValue(0),
+						_0: _pzp1997$elm_ios$Element_Attributes$text(model),
 						_1: {
 							ctor: '::',
-							_0: _pzp1997$elm_ios$Element_Attributes$maxValue(20),
+							_0: _pzp1997$elm_ios$Element_Attributes$bezelBorder,
 							_1: {
 								ctor: '::',
-								_0: _pzp1997$elm_ios$Element_Attributes$width(300),
+								_0: _pzp1997$elm_ios$Element_Attributes$textColor(_elm_lang$core$Color$red),
 								_1: {
 									ctor: '::',
-									_0: _pzp1997$elm_ios$Element_Attributes$sliderValue(model),
+									_0: _pzp1997$elm_ios$Element_Attributes$placeholder('Start'),
 									_1: {
 										ctor: '::',
-										_0: _pzp1997$elm_ios$Element_Attributes$minTrackColor(_elm_lang$core$Color$red),
+										_0: _pzp1997$elm_ios$Element_Attributes$font('Courier'),
 										_1: {
 											ctor: '::',
-											_0: _pzp1997$elm_ios$Element_Attributes$maxTrackColor(_elm_lang$core$Color$green),
+											_0: _pzp1997$elm_ios$Element_Attributes$width(300),
 											_1: {
 												ctor: '::',
-												_0: _pzp1997$elm_ios$Element_Attributes$thumbColor(_elm_lang$core$Color$lightPurple),
+												_0: _pzp1997$elm_ios$Element_Attributes$whileEditingClearButton,
 												_1: {
 													ctor: '::',
-													_0: _pzp1997$elm_ios$Element_Attributes$minImage('sun.png'),
-													_1: {
-														ctor: '::',
-														_0: _pzp1997$elm_ios$Element_Attributes$maxImage('sun.png'),
-														_1: {
-															ctor: '::',
-															_0: _pzp1997$elm_ios$Element_Events$onFloatValueChanged(_pzp1997$elm_ios$Main$Slid),
-															_1: {ctor: '[]'}
-														}
-													}
+													_0: _pzp1997$elm_ios$Element_Events$onEditingChanged(_pzp1997$elm_ios$Main$TextUpdate),
+													_1: {ctor: '[]'}
 												}
 											}
 										}

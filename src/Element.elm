@@ -7,6 +7,7 @@ module Element
         , button
         , slider
         , switch
+        , textField
         , column
         , row
         , map
@@ -15,7 +16,7 @@ module Element
         )
 
 {-| #Element
-@docs Element, Attribute, label, image, button, switch, slider, column, row, map, beginnerProgram, program
+@docs Element, Attribute, label, image, button, switch, slider, textField, column, row, map, beginnerProgram, program
 -}
 
 import Element.Internal as Internal
@@ -60,6 +61,12 @@ slider properties =
 switch : List (Attribute msg) -> Element msg
 switch properties =
     Internal.leaf "switch" properties
+
+
+{-| -}
+textField : List (Attribute msg) -> Element msg
+textField properties =
+    Internal.leaf "textField" properties
 
 
 {-| -}

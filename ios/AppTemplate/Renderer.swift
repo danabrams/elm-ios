@@ -114,6 +114,18 @@ class Renderer: NSObject {
                             }
                         }
                         return slider
+                    case "textField":
+                        let textField: UITextField = UITextField()
+                        applyFacts(view: textField, facts: facts, tag: tag)
+
+                        if !handlers.isEmpty {
+                            let handlerNode = handlers[handlersIndex] as Json
+                            if let handlerOffset = handlerNode["offset"] as? Int, handlerOffset == offset, let funcs = handlerNode["funcs"] as? Json, let eventId = handlerNode["eventId"] as? UInt64 {
+                                addControlHandlers(funcs, id: eventId, view: textField)
+                                handlersIndex += 1
+                            }
+                        }
+                        return textField
                     default:
                         return nil
                     }
@@ -273,6 +285,10 @@ class Renderer: NSObject {
                         view.addAction(event: eventType, { (_, event) in
                             viewController.handleEvent(id: id, name: name, data: slider.value)
                         })
+                    case let textField as UITextField:
+                        view.addAction(event: eventType, { (_, event) in
+                            viewController.handleEvent(id: id, name: name, data: textField.text ?? "")
+                        })
                     default:
                         view.addAction(event: eventType, { (_, event) in
                             viewController.handleEvent(id: id, name: name, data: event)
@@ -307,6 +323,8 @@ class Renderer: NSObject {
             applySwitchFacts(_switch: view as! UISwitch, facts: facts)
         case "slider":
             applySliderFacts(slider: view as! UISlider, facts: facts)
+        case "textField":
+            applyTextFieldFacts(textField: view as! UITextField, facts: facts)
         case "parent":
             applyViewFacts(view: view, facts: facts)
             break
@@ -522,6 +540,105 @@ class Renderer: NSObject {
                     else{ slider.minimumValueImage = nil}
                 }
                 else {slider.minimumValueImage = nil}
+            default:
+                break
+            }
+        }
+    }
+
+    static func applyTextFieldFacts(textField: UITextField, facts: Json) {
+        for key in facts.keys {
+            switch key {
+            case "text":
+                if let value = facts[key] as? String {
+                    textField.text = value
+                    textField.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    textField.text = ""
+                }
+                break
+            case "placeholder":
+                if let value = facts[key] as? String {
+                    textField.placeholder = value
+                    textField.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    textField.placeholder = ""
+                }
+                break
+            case "textColor":
+                if let value = facts[key] as? [Float] {
+                    textField.textColor = extractColor(value)
+                } else {
+                    textField.textColor = .black
+                }
+                break
+            case "textAlignment":
+                if let value = facts[key] as? String {
+                    if let alignment = extractTextAlignment(value) {
+                        // store as Int in JSON and use rawValue
+                        textField.textAlignment = alignment
+                    }
+                } else {
+                    textField.textAlignment = .natural // prior to iOS 9.0, `left` was the default
+                }
+                break
+            case "font":
+                if let value = facts[key] as? String {
+                    textField.font = UIFont(name: value, size: (textField.font?.pointSize)!)
+                } else {
+                    textField.font = UIFont.systemFont(ofSize: (textField.font?.pointSize)!)
+                }
+                break
+            case "fontSize":
+                if let value = facts[key] as? CGFloat {
+                    textField.font = textField.font?.withSize(value)
+                } else {
+                    textField.font = textField.font?.withSize(UIFont.systemFontSize)
+                }
+                break
+            case "textBorderStyle":
+                if let value = facts[key] as? String {
+                    switch value {
+                        case "None":
+                            textField.borderStyle = UITextBorderStyle.none
+                        case "Line":
+                            textField.borderStyle = UITextBorderStyle.line
+                        case "Bezel":
+                            textField.borderStyle = UITextBorderStyle.bezel
+                        default:
+                            textField.borderStyle = UITextBorderStyle.roundedRect
+
+                    }
+
+                    textField.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    textField.borderStyle = UITextBorderStyle.roundedRect
+                }
+                break
+            case "clearButton":
+                if let value = facts[key] as? String {
+                    switch value {
+                        case "Always":
+                            textField.clearButtonMode = .always
+                        case "WhileEditing":
+                            textField.clearButtonMode = .whileEditing
+                        case "UnlessEditing":
+                            textField.clearButtonMode = .unlessEditing
+                        default:
+                            textField.clearButtonMode = .always
+
+                    }
+                    
+                    textField.yoga.markDirty()
+                } else {
+                    // TODO double check that nil is the default value
+                    textField.clearButtonMode = .always
+                }
+                break
+
             default:
                 break
             }
@@ -987,6 +1104,16 @@ class Renderer: NSObject {
             return .touchDragExit
         case "allTouchEvents":
             return .allTouchEvents
+        case "editingDidEnd":
+            return .editingDidEnd
+        case "editingDidEndOnExit":
+            return .editingDidEndOnExit
+        case "editingDidBegin":
+            return .editingDidBegin
+        case "editingChanged":
+            return .editingChanged
+        case "allEditingEvents":
+            return .allEditingEvents
         default:
             return nil
         }

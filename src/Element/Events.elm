@@ -13,10 +13,14 @@ module Element.Events
         , onTouchDragEnter
         , onTouchDragExit
         , onAllTouchEvents
+        , onEditingDidBegin
+        , onEditingChanged
+        , onEditingDidEnd
+        , onEditingDidEndOnExit
         )
 
 {-| #Events
-@docs on, onBoolValueChanged, onFloatValueChanged, onTouchUpInside, onTouchUpOutside, onTouchDown, onTouchDownRepeat, onTouchCancel, onTouchDragInside, onTouchDragOutside, onTouchDragEnter, onTouchDragExit, onAllTouchEvents, on
+@docs on, onBoolValueChanged, onFloatValueChanged, onTouchUpInside, onTouchUpOutside, onTouchDown, onTouchDownRepeat, onTouchCancel, onTouchDragInside, onTouchDragOutside, onTouchDragEnter, onTouchDragExit, onAllTouchEvents, on, onEditingDidBegin, onEditingChanged, onEditingDidEnd, onEditingDidEndOnExit
 -}
 
 import Element exposing (Attribute)
@@ -104,3 +108,33 @@ onTouchDragExit msg =
 onAllTouchEvents : msg -> Attribute msg
 onAllTouchEvents msg =
     on "allTouchEvents" (Json.succeed msg)
+
+
+{-| -}
+onEditingDidEnd : (String -> msg) -> Attribute msg
+onEditingDidEnd tagger =
+    on "editingDidEnd" (Json.map tagger Json.string)
+
+
+{-| -}
+onEditingDidEndOnExit : (String -> msg) -> Attribute msg
+onEditingDidEndOnExit tagger =
+    on "editingDidEndOnExit" (Json.map tagger Json.string)
+
+
+{-| -}
+onEditingDidBegin : (String -> msg) -> Attribute msg
+onEditingDidBegin tagger =
+    on "editingDidBegin" (Json.map tagger Json.string)
+
+
+{-| -}
+onEditingChanged : (String -> msg) -> Attribute msg
+onEditingChanged tagger =
+    on "editingChanged" (Json.map tagger Json.string)
+
+
+{-| -}
+allEditingEvents : (String -> msg) -> Attribute msg
+allEditingEvents tagger =
+    on "allEditingEvents" (Json.map tagger Json.string)

@@ -71,10 +71,21 @@ module Element.Attributes
         , maxTrackColor
         , minImage
         , maxImage
+        , textBorderStyle
+        , roundedRectBorder
+        , lineBorder
+        , bezelBorder
+        , noneBorder
+        , placeholder
+        , clearButton
+        , alwaysClearButton
+        , neverClearButton
+        , whileEditingClearButton
+        , unlessEditingClearButton
         )
 
 {-| #Attributes
-@docs map, text, textColor, textAlignment, font, fontSize, numberOfLines, lineBreakMode, shadowColor, shadowOffset, src, backgroundColor, justifyContent, flexWrap, alignItems, alignSelf, alignContent, flexGrow, flexShrink, flexBasis, position, left, top, right, bottom, start, end, minWidth, minHeight, maxWidth, maxHeight, width, height, margin, marginLeft, marginTop, marginRight, marginBottom, marginStart, marginEnd, marginVertical, marginHorizontal, padding, paddingLeft, paddingTop, paddingRight, paddingBottom, paddingStart, paddingEnd, paddingVertical, paddingHorizontal, borderWidth, borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth, borderStartWidth, borderEndWidth, aspectRatio, direction, switchedOn, switchedOnColor, switchedOffColor, thumbColor, minValue, maxValue, sliderValue, minTrackColor, maxTrackColor, minImage, maxImage
+@docs map, text, textColor, textAlignment, font, fontSize, numberOfLines, lineBreakMode, shadowColor, shadowOffset, src, backgroundColor, justifyContent, flexWrap, alignItems, alignSelf, alignContent, flexGrow, flexShrink, flexBasis, position, left, top, right, bottom, start, end, minWidth, minHeight, maxWidth, maxHeight, width, height, margin, marginLeft, marginTop, marginRight, marginBottom, marginStart, marginEnd, marginVertical, marginHorizontal, padding, paddingLeft, paddingTop, paddingRight, paddingBottom, paddingStart, paddingEnd, paddingVertical, paddingHorizontal, borderWidth, borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth, borderStartWidth, borderEndWidth, aspectRatio, direction, switchedOn, switchedOnColor, switchedOffColor, thumbColor, minValue, maxValue, sliderValue, minTrackColor, maxTrackColor, minImage, maxImage, textBorderStyle, roundedRectBorder, lineBorder, bezelBorder, noneBorder, placeholder, clearButton, alwaysClearButton, neverClearButton, whileEditingClearButton, unlessEditingClearButton
 -}
 
 import Color exposing (Color)
@@ -306,6 +317,105 @@ minImage value =
 maxImage : String -> Attribute msg
 maxImage value =
     stringProperty "maxImage" value
+
+
+
+{- TextField -}
+
+
+{-| -}
+placeholder : String -> Attribute msg
+placeholder value =
+    stringProperty "placeholder" value
+
+
+type TextBorder
+    = None
+    | RoundedRect
+    | Line
+    | Bezel
+
+
+type ClearButtonStyle
+    = Never
+    | WhileEditing
+    | UnlessEditing
+    | Always
+
+
+{-| -}
+unlessEditingClearButton : Attribute msg
+unlessEditingClearButton =
+    clearButton "UnlessEditing"
+
+
+{-| -}
+neverClearButton : Attribute msg
+neverClearButton =
+    clearButton "Never"
+
+
+{-| -}
+whileEditingClearButton : Attribute msg
+whileEditingClearButton =
+    clearButton "WhileEditing"
+
+
+{-| -}
+alwaysClearButton : Attribute msg
+alwaysClearButton =
+    clearButton "Always"
+
+
+{-| -}
+clearButton : String -> Attribute msg
+clearButton style =
+    stringProperty "clearButton" style
+
+
+{-| -}
+roundedRectBorder : Attribute msg
+roundedRectBorder =
+    textBorderStyle RoundedRect
+
+
+{-| -}
+noneBorder : Attribute msg
+noneBorder =
+    textBorderStyle None
+
+
+{-| -}
+lineBorder : Attribute msg
+lineBorder =
+    textBorderStyle Line
+
+
+{-| -}
+bezelBorder : Attribute msg
+bezelBorder =
+    textBorderStyle Bezel
+
+
+{-| -}
+textBorderStyle : TextBorder -> Attribute msg
+textBorderStyle style =
+    let
+        border =
+            case style of
+                None ->
+                    "None"
+
+                RoundedRect ->
+                    "RoundedRect"
+
+                Line ->
+                    "Line"
+
+                Bezel ->
+                    "Bezel"
+    in
+        stringProperty "textBorderStyle" border
 
 
 
