@@ -7121,6 +7121,9 @@ var _pzp1997$elm_ios$Element_Attributes$font = function (value) {
 var _pzp1997$elm_ios$Element_Attributes$lineBreakMode = function (value) {
 	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'lineBreakMode', value);
 };
+var _pzp1997$elm_ios$Element_Attributes$imageSrc = function (imagePath) {
+	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'imageSrc', imagePath);
+};
 var _pzp1997$elm_ios$Element_Attributes$src = function (value) {
 	return A2(_pzp1997$elm_ios$Element_Attributes$stringProperty, 'src', value);
 };
@@ -7283,14 +7286,286 @@ var _pzp1997$elm_ios$Element_Events$allEditingEvents = function (tagger) {
 		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$string));
 };
 
+var _pzp1997$elm_ios$Main$emptyEntry = F2(
+	function (desc, id) {
+		return {description: desc, completed: false, editing: false, uid: id};
+	});
 var _pzp1997$elm_ios$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		return {ctor: '_Tuple2', _0: _p0._0, _1: _elm_lang$core$Platform_Cmd$none};
+		switch (_p0.ctor) {
+			case 'UpdateEntry':
+				var updateEntry = function (t) {
+					return _elm_lang$core$Native_Utils.eq(t.uid, _p0._0) ? _elm_lang$core$Native_Utils.update(
+						t,
+						{description: _p0._1, editing: false}) : t;
+				};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							entries: A2(_elm_lang$core$List$map, updateEntry, model.entries),
+							counter: model.counter + 1,
+							debugCounter: model.debugCounter + 1
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'NewEntry':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							entries: A2(
+								_elm_lang$core$Basics_ops['++'],
+								model.entries,
+								{
+									ctor: '::',
+									_0: A2(_pzp1997$elm_ios$Main$emptyEntry, _p0._0, model.currentId),
+									_1: {ctor: '[]'}
+								}),
+							currentId: model.currentId + 1,
+							debugCounter: model.debugCounter + 1
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ChangeCompleted':
+				var changeMark = function (t) {
+					return _elm_lang$core$Native_Utils.eq(t.uid, _p0._0) ? _elm_lang$core$Native_Utils.update(
+						t,
+						{completed: !t.completed}) : t;
+				};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							entries: A2(_elm_lang$core$List$map, changeMark, model.entries),
+							debugCounter: model.debugCounter + 1
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'DeleteEntry':
+				var isOurId = function (t) {
+					return !_elm_lang$core$Native_Utils.eq(t.uid, _p0._0);
+				};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							entries: A2(_elm_lang$core$List$filter, isOurId, model.entries)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
 	});
-var _pzp1997$elm_ios$Main$init = {ctor: '_Tuple2', _0: '', _1: _elm_lang$core$Platform_Cmd$none};
-var _pzp1997$elm_ios$Main$TextUpdate = function (a) {
-	return {ctor: 'TextUpdate', _0: a};
+var _pzp1997$elm_ios$Main$init = {
+	ctor: '_Tuple2',
+	_0: {
+		entries: A2(
+			_elm_lang$core$List$map,
+			_pzp1997$elm_ios$Main$emptyEntry(''),
+			{
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 1,
+					_1: {
+						ctor: '::',
+						_0: 2,
+						_1: {
+							ctor: '::',
+							_0: 3,
+							_1: {
+								ctor: '::',
+								_0: 4,
+								_1: {
+									ctor: '::',
+									_0: 5,
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}),
+		currentId: 6,
+		counter: 0,
+		debugCounter: 0
+	},
+	_1: _elm_lang$core$Platform_Cmd$none
+};
+var _pzp1997$elm_ios$Main$Entry = F4(
+	function (a, b, c, d) {
+		return {description: a, editing: b, completed: c, uid: d};
+	});
+var _pzp1997$elm_ios$Main$Model = F4(
+	function (a, b, c, d) {
+		return {entries: a, currentId: b, counter: c, debugCounter: d};
+	});
+var _pzp1997$elm_ios$Main$NoOp = {ctor: 'NoOp'};
+var _pzp1997$elm_ios$Main$DeleteEntry = function (a) {
+	return {ctor: 'DeleteEntry', _0: a};
+};
+var _pzp1997$elm_ios$Main$ChangeCompleted = function (a) {
+	return {ctor: 'ChangeCompleted', _0: a};
+};
+var _pzp1997$elm_ios$Main$NewEntry = function (a) {
+	return {ctor: 'NewEntry', _0: a};
+};
+var _pzp1997$elm_ios$Main$UpdateEntry = F2(
+	function (a, b) {
+		return {ctor: 'UpdateEntry', _0: a, _1: b};
+	});
+var _pzp1997$elm_ios$Main$entryView = function (entry) {
+	var _p1 = function () {
+		var _p2 = entry.completed;
+		if (_p2 === true) {
+			return {ctor: '_Tuple2', _0: 'checked.png', _1: _elm_lang$core$Color$gray};
+		} else {
+			return {ctor: '_Tuple2', _0: 'unchecked.png', _1: _elm_lang$core$Color$black};
+		}
+	}();
+	var checkboxImage = _p1._0;
+	var txtColor = _p1._1;
+	return A2(
+		_pzp1997$elm_ios$Element$row,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_pzp1997$elm_ios$Element$column,
+				{
+					ctor: '::',
+					_0: _pzp1997$elm_ios$Element_Attributes$width(50),
+					_1: {
+						ctor: '::',
+						_0: _pzp1997$elm_ios$Element_Attributes$height(50),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _pzp1997$elm_ios$Element$button(
+						{
+							ctor: '::',
+							_0: _pzp1997$elm_ios$Element_Attributes$imageSrc(checkboxImage),
+							_1: {
+								ctor: '::',
+								_0: _pzp1997$elm_ios$Element_Events$onTouchDown(
+									_pzp1997$elm_ios$Main$ChangeCompleted(entry.uid)),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_pzp1997$elm_ios$Element$column,
+					{
+						ctor: '::',
+						_0: _pzp1997$elm_ios$Element_Attributes$width(320),
+						_1: {
+							ctor: '::',
+							_0: _pzp1997$elm_ios$Element_Attributes$height(50),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _pzp1997$elm_ios$Element$textField(
+							{
+								ctor: '::',
+								_0: _pzp1997$elm_ios$Element_Attributes$width(320),
+								_1: {
+									ctor: '::',
+									_0: _pzp1997$elm_ios$Element_Attributes$height(50),
+									_1: {
+										ctor: '::',
+										_0: _pzp1997$elm_ios$Element_Attributes$placeholder('What needs to be done?'),
+										_1: {
+											ctor: '::',
+											_0: _pzp1997$elm_ios$Element_Attributes$text(entry.description),
+											_1: {
+												ctor: '::',
+												_0: _pzp1997$elm_ios$Element_Attributes$textColor(txtColor),
+												_1: {
+													ctor: '::',
+													_0: _pzp1997$elm_ios$Element_Attributes$roundedRectBorder,
+													_1: {
+														ctor: '::',
+														_0: _pzp1997$elm_ios$Element_Events$onEditingDidEndOnExit(
+															_pzp1997$elm_ios$Main$UpdateEntry(entry.uid)),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_pzp1997$elm_ios$Element$column,
+						{
+							ctor: '::',
+							_0: _pzp1997$elm_ios$Element_Attributes$width(50),
+							_1: {
+								ctor: '::',
+								_0: _pzp1997$elm_ios$Element_Attributes$height(50),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _pzp1997$elm_ios$Element$button(
+								{
+									ctor: '::',
+									_0: _pzp1997$elm_ios$Element_Attributes$textColor(_elm_lang$core$Color$red),
+									_1: {
+										ctor: '::',
+										_0: _pzp1997$elm_ios$Element_Attributes$fontSize(40),
+										_1: {
+											ctor: '::',
+											_0: _pzp1997$elm_ios$Element_Attributes$text('-'),
+											_1: {
+												ctor: '::',
+												_0: _pzp1997$elm_ios$Element_Events$onTouchDown(
+													_pzp1997$elm_ios$Main$DeleteEntry(entry.uid)),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _pzp1997$elm_ios$Main$todoListView = function (model) {
+	return A2(
+		_pzp1997$elm_ios$Element$column,
+		{ctor: '[]'},
+		A2(
+			_elm_lang$core$List$map,
+			_pzp1997$elm_ios$Main$entryView,
+			A2(
+				_elm_lang$core$List$sortBy,
+				function (_) {
+					return _.uid;
+				},
+				model.entries)));
 };
 var _pzp1997$elm_ios$Main$view = function (model) {
 	return A2(
@@ -7300,59 +7575,97 @@ var _pzp1997$elm_ios$Main$view = function (model) {
 			_0: _pzp1997$elm_ios$Element_Attributes$flexGrow(1),
 			_1: {
 				ctor: '::',
-				_0: _pzp1997$elm_ios$Element_Attributes$justifyContent('center'),
+				_0: _pzp1997$elm_ios$Element_Attributes$justifyContent('flex-start'),
 				_1: {
 					ctor: '::',
 					_0: _pzp1997$elm_ios$Element_Attributes$alignItems('center'),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: _pzp1997$elm_ios$Element_Attributes$backgroundColor(
+							A3(_elm_lang$core$Color$rgb, 245, 245, 245)),
+						_1: {
+							ctor: '::',
+							_0: _pzp1997$elm_ios$Element_Attributes$paddingTop(20),
+							_1: {ctor: '[]'}
+						}
+					}
 				}
 			}
 		},
 		{
 			ctor: '::',
-			_0: _pzp1997$elm_ios$Element$label(
+			_0: A2(
+				_pzp1997$elm_ios$Element$row,
+				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _pzp1997$elm_ios$Element_Attributes$text(model),
+					_0: _pzp1997$elm_ios$Element$label(
+						{
+							ctor: '::',
+							_0: _pzp1997$elm_ios$Element_Attributes$textColor(
+								A3(_elm_lang$core$Color$rgb, 175, 85, 85)),
+							_1: {
+								ctor: '::',
+								_0: _pzp1997$elm_ios$Element_Attributes$text('todos'),
+								_1: {
+									ctor: '::',
+									_0: _pzp1997$elm_ios$Element_Attributes$fontSize(48),
+									_1: {ctor: '[]'}
+								}
+							}
+						}),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
-				_0: _pzp1997$elm_ios$Element$textField(
-					{
-						ctor: '::',
-						_0: _pzp1997$elm_ios$Element_Attributes$text(model),
-						_1: {
+				_0: _pzp1997$elm_ios$Main$todoListView(model),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_pzp1997$elm_ios$Element$row,
+						{
 							ctor: '::',
-							_0: _pzp1997$elm_ios$Element_Attributes$bezelBorder,
+							_0: _pzp1997$elm_ios$Element_Attributes$position('absolute'),
 							_1: {
 								ctor: '::',
-								_0: _pzp1997$elm_ios$Element_Attributes$textColor(_elm_lang$core$Color$red),
+								_0: _pzp1997$elm_ios$Element_Attributes$bottom(10),
 								_1: {
 									ctor: '::',
-									_0: _pzp1997$elm_ios$Element_Attributes$placeholder('Start'),
-									_1: {
-										ctor: '::',
-										_0: _pzp1997$elm_ios$Element_Attributes$font('Courier'),
-										_1: {
-											ctor: '::',
-											_0: _pzp1997$elm_ios$Element_Attributes$width(300),
-											_1: {
-												ctor: '::',
-												_0: _pzp1997$elm_ios$Element_Attributes$whileEditingClearButton,
-												_1: {
-													ctor: '::',
-													_0: _pzp1997$elm_ios$Element_Events$onEditingChanged(_pzp1997$elm_ios$Main$TextUpdate),
-													_1: {ctor: '[]'}
-												}
-											}
-										}
-									}
+									_0: _pzp1997$elm_ios$Element_Attributes$right(10),
+									_1: {ctor: '[]'}
 								}
 							}
-						}
-					}),
-				_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _pzp1997$elm_ios$Element$button(
+								{
+									ctor: '::',
+									_0: _pzp1997$elm_ios$Element_Attributes$imageSrc('plus.png'),
+									_1: {
+										ctor: '::',
+										_0: _pzp1997$elm_ios$Element_Events$onTouchUpInside(
+											_pzp1997$elm_ios$Main$NewEntry('')),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _pzp1997$elm_ios$Element$label(
+							{
+								ctor: '::',
+								_0: _pzp1997$elm_ios$Element_Attributes$text(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										'Number of button clicks: ',
+										_elm_lang$core$Basics$toString(model.debugCounter))),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
 			}
 		});
 };
@@ -7361,7 +7674,7 @@ var _pzp1997$elm_ios$Main$main = _pzp1997$elm_ios$Element$program(
 		init: _pzp1997$elm_ios$Main$init,
 		view: _pzp1997$elm_ios$Main$view,
 		update: _pzp1997$elm_ios$Main$update,
-		subscriptions: function (_p1) {
+		subscriptions: function (_p3) {
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();

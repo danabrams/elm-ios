@@ -21,6 +21,7 @@ module Element.Attributes
         , flexShrink
         , flexBasis
         , position
+        , imageSrc
         , left
         , top
         , right
@@ -85,7 +86,7 @@ module Element.Attributes
         )
 
 {-| #Attributes
-@docs map, text, textColor, textAlignment, font, fontSize, numberOfLines, lineBreakMode, shadowColor, shadowOffset, src, backgroundColor, justifyContent, flexWrap, alignItems, alignSelf, alignContent, flexGrow, flexShrink, flexBasis, position, left, top, right, bottom, start, end, minWidth, minHeight, maxWidth, maxHeight, width, height, margin, marginLeft, marginTop, marginRight, marginBottom, marginStart, marginEnd, marginVertical, marginHorizontal, padding, paddingLeft, paddingTop, paddingRight, paddingBottom, paddingStart, paddingEnd, paddingVertical, paddingHorizontal, borderWidth, borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth, borderStartWidth, borderEndWidth, aspectRatio, direction, switchedOn, switchedOnColor, switchedOffColor, thumbColor, minValue, maxValue, sliderValue, minTrackColor, maxTrackColor, minImage, maxImage, textBorderStyle, roundedRectBorder, lineBorder, bezelBorder, noneBorder, placeholder, clearButton, alwaysClearButton, neverClearButton, whileEditingClearButton, unlessEditingClearButton
+@docs map, text, textColor, textAlignment, font, fontSize, numberOfLines, lineBreakMode, shadowColor, shadowOffset, src, backgroundColor, justifyContent, flexWrap, alignItems, alignSelf, alignContent, flexGrow, flexShrink, flexBasis, position, left, top, right, bottom, start, end, minWidth, minHeight, maxWidth, maxHeight, width, height, margin, marginLeft, marginTop, marginRight, marginBottom, marginStart, marginEnd, marginVertical, marginHorizontal, padding, paddingLeft, paddingTop, paddingRight, paddingBottom, paddingStart, paddingEnd, paddingVertical, paddingHorizontal, borderWidth, borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth, borderStartWidth, borderEndWidth, aspectRatio, direction, switchedOn, switchedOnColor, switchedOffColor, thumbColor, minValue, maxValue, sliderValue, minTrackColor, maxTrackColor, minImage, maxImage, textBorderStyle, roundedRectBorder, lineBorder, bezelBorder, noneBorder, placeholder, clearButton, alwaysClearButton, neverClearButton, whileEditingClearButton, unlessEditingClearButton, imageSrc
 -}
 
 import Color exposing (Color)
@@ -223,6 +224,16 @@ shadowOffset xOffset yOffset =
             , Json.float yOffset
             ]
         )
+
+
+
+{- Button -}
+
+
+{-| -}
+imageSrc : String -> Attribute msg
+imageSrc imagePath =
+    stringProperty "imageSrc" imagePath
 
 
 

@@ -62,7 +62,7 @@ class Renderer: NSObject {
                         applyFacts(view: label, facts: facts, tag: tag)
                         return label
                     case "button":
-                        let button: UIButton = UIButton(type: .system)
+                        let button: UIButton = UIButton(type: .custom)
 
                         applyFacts(view: button, facts: facts, tag: tag)
 
@@ -72,7 +72,7 @@ class Renderer: NSObject {
                                 addControlHandlers(funcs, id: eventId, view: button)
                                 handlersIndex += 1
                             }
-                        }
+                         }
 
                         return button
                     case "image":
@@ -603,6 +603,7 @@ class Renderer: NSObject {
                     switch value {
                         case "None":
                             textField.borderStyle = UITextBorderStyle.none
+                            
                         case "Line":
                             textField.borderStyle = UITextBorderStyle.line
                         case "Bezel":
@@ -611,8 +612,8 @@ class Renderer: NSObject {
                             textField.borderStyle = UITextBorderStyle.roundedRect
 
                     }
-
                     textField.yoga.markDirty()
+
                 } else {
                     // TODO double check that nil is the default value
                     textField.borderStyle = UITextBorderStyle.roundedRect
@@ -638,7 +639,6 @@ class Renderer: NSObject {
                     textField.clearButtonMode = .always
                 }
                 break
-
             default:
                 break
             }
@@ -657,6 +657,17 @@ class Renderer: NSObject {
                     button.setTitle(nil, for: .normal)
                 }
                 break
+            case "imageSrc":
+                if let src = facts[key] as? String, let imageUrl = URL(string: "assets/" + src) {
+                    let fileName = imageUrl.deletingPathExtension().lastPathComponent
+                    let fileExtension = imageUrl.pathExtension
+                    let directory = imageUrl.deletingLastPathComponent().absoluteString
+                    
+                    if let imagePath = Bundle.main.path(forResource: fileName, ofType: fileExtension, inDirectory: directory), let imageData = UIImage(contentsOfFile: imagePath) {
+                        
+                        button.setImage(imageData, for: .normal)
+                    }
+                }
             case "textColor":
                 if let value = facts[key] as? [Float] {
                     button.setTitleColor(extractColor(value), for: .normal)
